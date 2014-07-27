@@ -5,11 +5,11 @@
 void kernel_main(void)
 {
 	vga_init();
-	kprintf("hello world!\n");
 	kprintf("this is a char: %c\n", '^');
 	kprintf("this is a string: %s\n", "hello world");
 	kprintf("this is a number: %i\n", 1234);
 	kprintf("this is a negative number: %i\n", -3874);
 	kprintf("this is a percent sign: %%\n");
+	kprintf("this has multiple args: %c %i %s %%\n", '$', 1234, " the end!!");
 }
 

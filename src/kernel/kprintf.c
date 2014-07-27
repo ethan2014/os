@@ -5,9 +5,9 @@
 #include <kprintf.h>
 #include <vga.h>
 
-static void parse_arg(const char arg, va_list list);
+static void parse_arg(const char arg, va_list *list);
 
-static void parse_arg(const char arg, va_list list)
+static void parse_arg(const char arg, va_list *list)
 {
 	char buffer[16];
 	
@@ -16,29 +16,29 @@ static void parse_arg(const char arg, va_list list)
 		vga_print_char(arg);
 		break;
 	case 'i':
-		itoa(va_arg(list, int), buffer);
+		itoa(va_arg(*list, int), buffer);
 		vga_print_string(buffer);
 		break;
 	case 'c':
-		vga_print_char(va_arg(list, int));
+		vga_print_char(va_arg(*list, int));
 		break;
 	case 's':
-		vga_print_string(va_arg(list, char*));
+		vga_print_string((char*) va_arg(*list, int));
 		break;
 	}
 }
 
 void kprintf(char *format, ...)
 {
-	char *str = format;
-	
 	va_list list;
-	va_start(list, str);
+	va_start(list, format);
+
+	char *str = format;
 
 	char c;
 	while ((c = *str++)) {
 		if (c == '%') {
-			parse_arg(*str++, list);
+			parse_arg(*str++, &list);
 		} else {
 			vga_print_char(c);
 		}
