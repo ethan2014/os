@@ -10,5 +10,6 @@ void kernel_main(void)
 	kprintf("this is a string: %s\n", "hello world");
 	kprintf("this is a number: %i\n", 1234);
 	kprintf("this is a negative number: %i\n", -3874);
+	kprintf("this is a percent sign: %%\n");
 }
 
