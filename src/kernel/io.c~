@@ -1,0 +1,6 @@
+#ifndef IO_C
+#define IO_C
+
+#include <io.h>
+
+#endif

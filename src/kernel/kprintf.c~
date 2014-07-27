@@ -1,0 +1,9 @@
+#ifndef KPRTINF_H
+#define KPRINTF_H
+
+void kprintf(const char *str, ...)
+{
+
+}
+
+#endif

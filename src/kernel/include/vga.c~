@@ -1,0 +1,9 @@
+#ifndef VGA_C
+#define VGA_C
+
+void vga_clear_screen(void)
+{
+	
+}
+
+#endif
