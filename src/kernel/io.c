@@ -16,7 +16,8 @@ char inb(int port, unsigned char data)
 {
 	char ret;
 	
-	asm("inb %%dx, %%al"
+	asm("inb %%dx, %%al\n\t"
+	    "movb %%al, %0"
 	    : "=m" (ret)
 	    : "d" (port), "a" (data)
 	    : // no clobbered

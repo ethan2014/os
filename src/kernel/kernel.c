@@ -1,10 +1,12 @@
 #include <kernel.h>
 #include <string.h>
 #include <vga.h>
+#include <keyboard.h>
 
 void kernel_main(void)
 {
 	vga_init();
+	keyboard_init();
 	kprintf("this is a char: %c\n", '^');
 	kprintf("this is a string: %s\n", "hello world");
 	kprintf("this is a number: %i\n", 1234);
@@ -21,8 +23,6 @@ void kernel_main(void)
 	}
 
 	kprintf("\n");
-
-	dump_registers();
 }
 
 void dump_registers(void)
