@@ -1,20 +1,46 @@
 #ifndef KPRTINF_H
 #define KPRINTF_H
 
+#include <string.h>
+#include <kprintf.h>
 #include <vga.h>
 
-void kprintf(const char *format, ...)
+static void parse_arg(const char arg, va_list list);
+
+static void parse_arg(const char arg, va_list list)
+{
+	char buffer[16];
+	
+	switch (arg) {
+	case '%':
+		vga_print_char(arg);
+		break;
+	case 'i':
+		itoa(va_arg(list, int), buffer);
+		vga_print_string(buffer);
+		break;
+	case 'c':
+		vga_print_char(va_arg(list, int));
+		break;
+	case 's':
+		vga_print_string(va_arg(list, char*));
+		break;
+	}
+}
+
+void kprintf(char *format, ...)
 {
 	char *str = format;
 	
 	va_list list;
 	va_start(list, str);
 
-	while ((char c = *str++)) {
+	char c;
+	while ((c = *str++)) {
 		if (c == '%') {
-
+			parse_arg(*str++, list);
 		} else {
-			
+			vga_print_char(c);
 		}
 	}
 

@@ -1,0 +1,57 @@
+#ifndef STRING_C
+#define STRING_C
+
+int strlen(char *str)
+{
+	int ret = 0;
+
+	while (*str++) {
+		ret++;
+	}
+
+	return ret;
+}
+
+void reverse(char *str)
+{
+	int i, j;
+ 
+	for (i = 0, j = strlen(str) - 1; i < j; i++, j--) {
+		swap((int*) str + i, (int*) str + j);
+	}
+}
+
+void swap(int *a, int *b)
+{
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+void itoa(int val, char *str)
+{
+	char *buffer = str;
+	char sign = 0;
+	char i = 0;
+	
+	if (val < 0) {
+		sign = 1;
+		val = -val;
+	}
+
+	do {
+		*(buffer + i) = val % 10 + '0';
+		i++;
+	} while ((val /= 10) > 0);
+
+	if (sign) {
+		*(buffer + i) = '-';
+		i++;
+	}
+
+	*(buffer + i) = '\0';
+
+	reverse(buffer);
+}
+
+#endif

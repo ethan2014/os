@@ -25,11 +25,13 @@ void vga_init(void);
 
 void vga_clear_screen(void);
 
-void vga_print_char_c(const char c);
+void vga_print_char(const char c);
 
 void vga_print_char_c(const char c, const unsigned char color);
 
-void vga_print_string(const char *str, const unsigned char color);
+void vga_print_string(const char *str);
+
+void vga_print_string_c(const char *str, const unsigned char color);
 
 void vga_println(const char *str);
 

@@ -100,7 +100,18 @@ void vga_print_char_c(const char c, const unsigned char color)
 	}
 }
 
-void vga_print_string(const char *str, const unsigned char color)
+void vga_print_string(const char *str)
+{
+	char color = make_color(COLOR_WHITE, COLOR_BLACK);
+
+	char c;
+	while ((c = *str++)) {
+		vga_print_char_c(c, color);
+	}
+}
+
+
+void vga_print_string_c(const char *str, const unsigned char color)
 {
 	char c;
 	while ((c = *str++)) {
@@ -110,10 +121,8 @@ void vga_print_string(const char *str, const unsigned char color)
 
 void vga_println(const char *str)
 {
-	char color = make_color(COLOR_WHITE, COLOR_BLACK);
-
-	vga_print_string(str, color);
-	vga_print_string("\n", color);
+	vga_print_string(str);
+	vga_print_char('\n');
 
 	update_cursor();
 }
