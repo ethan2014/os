@@ -1,6 +1,0 @@
-#ifndef KEYBOARD_C
-#define KEYBOARD_C
-
-#include <keyboard.h>
-
-#endif
