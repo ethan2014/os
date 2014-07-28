@@ -12,22 +12,18 @@ void keyboard_init(void)
 {
 	// enable first ps/2 port
 	outb(status_port, 0xAE);
+}
 
-	char status = inb(status_port, 0);
+char have_key_stroke(void)
+{
+	return inb(status_port, 0) & 1;
+}
 
-	kprintf("keyboard status: %i\n", status);
-
+char get_key_stroke(void)
+{
 	while (1) {
-		status = inb(status_port, 0);
-
-		if (status & 1) {
-			char c = inb(data_port, 0);
-
-			kprintf("%i", c);
-
-			if (c == 28) {
-				break;
-			}
+		if (have_key_stroke) {
+			return inb(data_port, 0);
 		}
 	}
 }
