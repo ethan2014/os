@@ -71,5 +71,3 @@ gdt_end:
 gdt_desc:
         .word	 gdt_end - gdt - 1
         .int	 gdt  
-
-test:	.asciz	"hello this is a string"
