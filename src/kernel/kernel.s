@@ -29,10 +29,10 @@ _start:
 	orl	$1, %eax
 	movl	%eax, %cr0
 
-	ljmp	$0x08, $function
+	ljmp	$0x08, $fix_seg_regs
 
 .code32
-function:
+fix_seg_regs:
 	movw	$0x10, %ax
 	movw	%ax, %ds
 	movw	%ax, %es
