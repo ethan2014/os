@@ -1,4 +1,4 @@
-#ifndef KPRTINF_H
+#ifndef KPRINTF_H
 #define KPRINTF_H
 
 #include <string.h>
