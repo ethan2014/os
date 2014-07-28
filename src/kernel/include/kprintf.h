@@ -1,4 +1,4 @@
-#ifndef KPRTINF_H
+#ifndef KPRINTF_H
 #define KPRINTF_H
 
 #define va_start(v,l) __builtin_va_start(v,l)
