@@ -1,5 +1,5 @@
-#ifndef KPRINTF_H
-#define KPRINTF_H
+#ifndef KPRINTF_C
+#define KPRINTF_C
 
 #include <string.h>
 #include <kprintf.h>
