@@ -1,3 +1,6 @@
+#ifndef KERNEL_C
+#define KERNEL_C
+
 #include <kernel.h>
 #include <string.h>
 #include <vga.h>
@@ -68,3 +71,5 @@ void dump_registers(void)
 	kprintf("es = %i\n", es);
 	kprintf("fs = %i\n", fs);
 }
+
+#endif
