@@ -43,8 +43,8 @@ start:
 	sti
 
 	## display loading os message
-	movw	$load_msg, %si
-	call	write_string
+	# movw	$load_msg, %si
+	# call	write_string
 
 	## reset the floppy controller
 	movb	boot_drive, %dl
@@ -174,8 +174,8 @@ read_next_file_cluster_done:
 	cmpw	$0x0FF8, %cx
 	jl      read_file_next_sector
 
-	movw	$booted_msg, %si
-	call	write_string
+	#movw	$booted_msg, %si
+	#call	write_string
 
 	## we have loaded the kernel into memory!! now start executing it
 	movw	$file_segment, %ax
@@ -184,28 +184,28 @@ read_next_file_cluster_done:
 	ljmp	$file_segment, $0
 
 boot_failed:
-	movw	$disk_error, %si
-	call	write_string
+	#movw	$disk_error, %si
+	#call	write_string
 	call	reboot
 
 ### function to write a string to the screen
-write_string:	
-	lodsb
-	orb	%al, %al
-	jz	write_string_done
-
-	movb	$0xE, %ah
-	movw	$9, %bx
-	int	$0x10
-
-	jmp	write_string
-write_string_done:
-	ret
+#write_string:	
+#	lodsb
+#	orb	%al, %al
+#	jz	write_string_done
+#
+#	movb	$0xE, %ah
+#	movw	$9, %bx
+#	int	$0x10
+#
+#	jmp	write_string
+#write_string_done:
+#	ret
 
 ### function to reboot
 reboot:
-	movw	$reboot_msg, %si
-	call	write_string
+	#movw	$reboot_msg, %si
+	#call	write_string
 	xorw	%ax, %ax
 	int	$0x16
 
@@ -269,15 +269,15 @@ read_fail:
 	jmp	read
 	
 ### program data
-load_msg:	.asciz	"loading\r\n\0"
-disk_error:	.asciz	"disk error.\r\n\0"
-reboot_msg:	.asciz	"rebooting..\r\n\0"
-booted_msg:	.asciz	"booted\r\n\0"
-filename:	.asciz	"KERNEL  BIN\0"
+#load_msg:	.asciz	"loading\r\n"
+#disk_error:	.asciz	"disk error.\r\n"
+#reboot_msg:	.asciz	"rebooting..\r\n"
+#booted_msg:	.asciz	"booted\r\n"
+filename:	.asciz	"KERNEL  BIN"
 root_sectors:	.word	0
 root_start:	.word	0
 file_start:	.word	0
 	
-.fill (510-(.-main)), 1, 0  	# Pad with nulls up to 510 bytes (excl. boot magic)
-BootMagic:  	.int 	0xAA55	# magic word for BIOS
+.fill (510-(.-main)), 1, 0  	# Pad with nulls up to 510 bytes
+BootMagic:  	.word 	0xAA55	# magic word for BIOS
 	
