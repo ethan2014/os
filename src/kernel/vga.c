@@ -61,7 +61,7 @@ static void set_cursor(int x, int y)
 {
 	unsigned short position = (y * text_width) + x;
 
-	outb(0x3D4, 0x0F); 
+	outb(0x3D4, 0x0F);
 	outb(0x3D5, (unsigned char) (position & 0xFF));
 
 	outb(0x3D4, 0x0E);
@@ -148,7 +148,7 @@ void vga_print_string_c(const char *str, const unsigned char color)
 {
 	char c;
 	char *ptr = str;
-	
+
 	while ((c = *ptr++)) {
 		vga_print_char_c(c, color);
 	}

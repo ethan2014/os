@@ -6,7 +6,7 @@
 .set	fat_segment, 0x0EE0
 .set	file_segment,	0x300
 .set	root_segment,	0x100
-	
+
 main:
 	jmp start
 	nop
@@ -31,7 +31,7 @@ boot_sign:     	.byte  0x29          	# extended boot sector signature
 vol_id:        	.ascii "seri"        	# disk serial
 volume_label: 	.ascii "MYVOLUME   " 	# volume label
 fs_type:      	.ascii "FAT12   "    	# file system type
-	
+
 start:
 	cli
 	movb	boot_drive, %dl
@@ -79,7 +79,7 @@ start:
 	## of the root dir's first sector
 	movw	$root_segment, %ax # load the root dir segments here in memory
 	movw	%ax, %es
-read_next_sector:	
+read_next_sector:
 	pushw	%cx
 	pushw	%ax
 	xorw	%bx, %bx
@@ -189,7 +189,7 @@ boot_failed:
 	call	reboot
 
 ### function to write a string to the screen
-#write_string:	
+#write_string:
 #	lodsb
 #	orb	%al, %al
 #	jz	write_string_done
@@ -233,7 +233,7 @@ read:
 	movw	spt, %bx
 	xorw	%dx, %dx
 	divw	%bx
-	
+
 	incw	%dx
 	movb	%dl, %cl
 
@@ -254,7 +254,7 @@ read:
 	popw	%cx
 	popw	%ax
 	ret
-	
+
 read_fail:
 	popw	%cx
 	incw	%cx
@@ -267,7 +267,7 @@ read_fail:
 
 	popw	%ax
 	jmp	read
-	
+
 ### program data
 #load_msg:	.asciz	"loading\r\n"
 #disk_error:	.asciz	"disk error.\r\n"
@@ -277,7 +277,6 @@ filename:	.asciz	"KERNEL  BIN"
 root_sectors:	.word	0
 root_start:	.word	0
 file_start:	.word	0
-	
+
 .fill (510-(.-main)), 1, 0  	# Pad with nulls up to 510 bytes
-BootMagic:  	.word 	0xAA55	# magic word for BIOS
-	
+boot_magic:  	.word 	0xAA55	# magic word for BIOS

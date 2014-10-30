@@ -10,7 +10,7 @@ static void parse_arg(const char arg, va_list *list);
 static void parse_arg(const char arg, va_list *list)
 {
 	char buffer[16];
-	
+
 	switch (arg) {
 	case '%':
 		vga_print_char(arg);

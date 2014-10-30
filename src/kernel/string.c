@@ -18,7 +18,7 @@ int strlen(char *str)
 void reverse(char *str)
 {
 	int i, j;
- 
+
 	for (i = 0, j = strlen(str) - 1; i < j; i++, j--) {
 		swap(str + i, str + j);
 	}
@@ -36,7 +36,7 @@ void itoa(int val, char *str)
 	char *buffer = str;
 	char sign = 0;
 	char i = 0;
-	
+
 	if (val < 0) {
 		sign = 1;
 		val = -val;
