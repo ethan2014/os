@@ -14,7 +14,7 @@ _start:
 	sti
 	
 	## now that we are in the kernel, we need to move to
-	## protected moden
+	## protected mode
 
 	## load the gdt into memory
 	cli
@@ -41,9 +41,12 @@ fix_seg_regs:
 	movw	%ax, %ss
 	movl	$0x90000, %esp
 
+	## we are now in protected mode, the GDT is set up and the stack is ready,
+	## so now we call the main function of the kernel
 	call	kernel_main
 
-hang:	jmp	hang
+hang:
+	jmp	hang
 
 gdt:				# address of the gdt
 	.word	0
