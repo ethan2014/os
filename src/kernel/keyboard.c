@@ -17,14 +17,14 @@ void keyboard_init(void)
 
 char have_key_stroke(void)
 {
-    return inb(status_port, 0) & 1;
+    return inb(status_port) & 1;
 }
 
 char get_key_stroke(void)
 {
     while (1) {
 	if (have_key_stroke()) {
-	    return inb(data_port, 0);
+	    return inb(data_port);
 	}
     }
 }

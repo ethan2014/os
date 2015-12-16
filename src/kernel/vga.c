@@ -13,11 +13,11 @@ static int text_y;
 
 static unsigned char make_color(enum vga_color fg, enum vga_color bg);
 
-static unsigned short make_vga_entry(char c, char color);
+static unsigned short make_vga_entry(const char c, const char color);
 
-static void set_video_buffer_c(int x, int y, char c, char color);
+static void set_video_buffer_color(const int x, const int y, const char c, const char color);
 
-static void set_video_buffer(int x, int y, short data);
+static void set_video_buffer(const int x, const int y, const short int data);
 
 static short get_video_buffer(int x, int y);
 
@@ -27,39 +27,49 @@ static void update_cursor(void);
 
 static void scroll_text(void);
 
+static void scroll_n_text(int lines);
+
 static unsigned char make_color(enum vga_color fg, enum vga_color bg)
 {
     return fg | bg << 4;
 }
 
-static unsigned short make_vga_entry(char c, char color)
+static unsigned short make_vga_entry(const char c, const char color)
 {
     return c | color << 8;
 }
 
-static void set_video_buffer_c(int x, int y, char c, char color)
+static void set_video_buffer_color(const int x, const int y, const char c, const char color)
 {
-    short value = make_vga_entry(c, color);
-
-    set_video_buffer(x, y, value);
+    set_video_buffer(x, y, make_vga_entry(c, color));
 }
 
-static void set_video_buffer(int x, int y, short data)
+static void set_video_buffer(const int x, const int y, const short data)
 {
-    static unsigned short* video_mem = (unsigned short*) 0xB8000;
+    const int video_mem = 0xB8000;
 
-    *(video_mem + (y * text_width + x)) = data;
+    *((short int*)video_mem + (y * text_width + x)) = data;
 }
 
-static short get_video_buffer(int x, int y)
+static short get_video_buffer(const int x, const int y)
 {
-    static const unsigned short* video_mem = (unsigned short*) 0xB8000;
+    static const unsigned int* video_mem = (unsigned int*) 0xB8000;
 
     return *(video_mem + (y * text_width + x));
 }
 
 static void set_cursor(int x, int y)
 {
+    if (x >= text_width) {
+        x = x - text_width;
+        y++;
+    }
+    
+    if (y >= text_height) {
+        y = 0;
+        scroll_text();
+    }
+    
     unsigned short position = (y * text_width) + x;
 
     outb(0x3D4, 0x0F);
@@ -76,16 +86,45 @@ static void update_cursor(void)
 
 static void scroll_text(void)
 {
-    vga_clear_screen();
+    scroll_n_text(1);
+}
+
+static void scroll_n_text(int lines)
+{
+    if (lines >= text_height) {
+        vga_clear_screen();
+        
+        return;
+    }
+    
+    static const char blank = ' ';
+    
+    unsigned short int line[81];
+    
+    int end = text_height - lines;
+    
+    while (lines < text_height) {
+        line[0] = '\0';
+        
+        int x;
+        for (x = 0; x < text_width; x++) {
+            line[x] = get_video_buffer(x, lines);
+        }
+        
+        line[x] = '\0';
+        
+        lines++;
+    }
 }
 
 void vga_init(void)
 {
-    text_width = *((short *) 0x044A);
+    //text_width = *((short *) 0x044A);
+    text_width = 80;
     text_height = 25;
     text_x = 0;
     text_y = 0;
-    vga_clear_screen();
+    //vga_clear_screen();
 }
 
 void vga_clear_screen(void)
@@ -93,10 +132,12 @@ void vga_clear_screen(void)
     const char color = make_color(COLOR_BLACK, COLOR_BLACK);
     static const char blank = ' ';
 
-    int x, y;
+    int x;
+    int y;
+    
     for (y = 0; y < text_height; y++) {
 	for (x = 0; x < text_width; x++) {
-	    set_video_buffer_c(x, y, blank, color);
+            set_video_buffer_color(x, y, blank, color);
 	}
     }
 
@@ -110,10 +151,10 @@ void vga_print_char(const char c)
 {
     const char color = make_color(COLOR_WHITE, COLOR_BLACK);
 
-    vga_print_char_c(c, color);
+    vga_print_char_color(c, color);
 }
 
-void vga_print_char_c(const char c, const unsigned char color)
+void vga_print_char_color(const char c, const unsigned char color)
 {
     switch (c) {
     case '\n':
@@ -122,7 +163,7 @@ void vga_print_char_c(const char c, const unsigned char color)
 	text_x = 0;
 	break;
     default:
-	set_video_buffer_c(text_x, text_y, c, color);
+        set_video_buffer_color(text_x, text_y, c, color);
 	text_x++;
 
 	if (text_x >= text_width) {
@@ -138,19 +179,23 @@ void vga_print_char_c(const char c, const unsigned char color)
     update_cursor();
 }
 
-void vga_print_string(const char *str)
+void vga_print_string(char *str)
 {
     if (str == NULL) {
 	return;
     }
     
+    
+    
     const char color = make_color(COLOR_WHITE, COLOR_BLACK);
+    
+    
 
-    vga_print_string_c(str, color);
+    vga_print_string_color(str, color);
 }
 
 
-void vga_print_string_c(const char *str, const unsigned char color)
+void vga_print_string_color(char *str, const unsigned char color)
 {
     if (str == NULL) {
 	return;
@@ -160,11 +205,11 @@ void vga_print_string_c(const char *str, const unsigned char color)
 
     char c;
     while ((c = *ptr++)) {
-	vga_print_char_c(c, color);
+        vga_print_char_color(c, color);
     }
 }
 
-void vga_println(const char *str)
+void vga_println(char *str)
 {
     if (str == NULL) {
 	return;

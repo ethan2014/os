@@ -3,12 +3,10 @@
 
 #include <stddef.h>
 
-int strlen(char *str);
+size_t strlen(char* str);
 
-void reverse(char *str);
+void reverse(char* str);
 
-void swap(char *a, char *b);
-
-void itoa(int val, char *str);
+void swap(char* a, char* b);
 
 #endif

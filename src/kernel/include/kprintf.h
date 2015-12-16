@@ -7,6 +7,8 @@
 #define va_copy(d,s)  __builtin_va_copy(d,s)
 typedef __builtin_va_list va_list;
 
-void kprintf(char *str, ...);
+void kprintf(char* format, ...);
+
+void kputs(char* str);
 
 #endif

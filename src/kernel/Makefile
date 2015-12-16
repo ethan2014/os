@@ -1,4 +1,4 @@
-# Makefile for the bootlader
+# Makefile for the kernel
 
 AS := as
 LD := ld
@@ -14,4 +14,8 @@ kernel.bin: kernel.o
 
 kernel.o: kernel.s kernel.c
 	$(CC) $(FLAGS) -e_start -Ttext=0x3000 -o kernel.o $(FILES)
+
+clean:
+	rm kernel.o
+	rm kernel.bin
 
