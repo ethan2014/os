@@ -10,26 +10,13 @@
 void kernel_main(void)
 {
     vga_init();
-    kprintf("OS by Ethan Lape\n");
-    kprintf("address of kernel main: %i\n", (int) kernel_main);
-    kprintf("this is a char: %c %c %s\n", 'a', 'b', "str");
-    kprintf("this is a string: %s %s\n", "hello world", "hi");
-    kprintf("more strings: %s\n", "another thing");
-    kprintf("this is a negative number: %i\n", -3874);
-    kprintf("this is a very long line, so it should wrap around to the next line. %s\n",
-            "even when part of the printed text is an % argument like this string");
-    kprintf("--- some ints ---\n");
     
-    int i;
-    for (i = 0; i < 50; i++) {
-         kprintf("%i ", i);
-    }
+    kputs("OS by Ethan Lape and Kyle Sandstrom");
+    kputs("-----------------------------------");
     
-    kprintf("\n");
+    kprintf("location of kernel_mail: %i\n", (int) kernel_main);
     
-    dump_registers();
-     
-    for (;;);
+    for(;;);
 }
 
 void dump_registers(void)
